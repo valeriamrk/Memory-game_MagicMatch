@@ -2,6 +2,8 @@
 
 ![Memory game](/src/assets/images/memorygame.png "Memory game")
 
+DEMO: https://nftplatform-open-ocean.vercel.app/
+
 Used technology stack:
 
 - React
