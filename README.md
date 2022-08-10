@@ -2,7 +2,7 @@
 
 ![Memory game](/src/assets/images/memorygame.png "Memory game")
 
-DEMO: https://nftplatform-open-ocean.vercel.app/
+DEMO: https://memory-game-magic-match.vercel.app/
 
 Used technology stack:
 
