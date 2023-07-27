@@ -1,9 +1,6 @@
 import React from "react";
 import { Lose, Win } from "../..";
 import "./MyModal.scss";
-import { createPortal } from "react-dom";
-
-const portal = document.getElementById("portal");
 
 const MyModal = (props) => {
   const {
@@ -17,12 +14,13 @@ const MyModal = (props) => {
     gameMode,
     isGameLosed,
   } = props;
-  return createPortal(
+
+  return (
     <div
       className={isModalActive ? "modal active" : "modal"}
       isModalActive={isModalActive}
     >
-      <div className="modalContent">
+      <div className="modalContent" onClick={(e) => e.stopPropagation()}>
         {isGameLosed === true ? (
           <Lose
             startGame={startGame}
@@ -45,8 +43,7 @@ const MyModal = (props) => {
           />
         )}
       </div>
-    </div>,
-    portal
+    </div>
   );
 };
 
