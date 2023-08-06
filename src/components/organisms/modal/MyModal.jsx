@@ -23,7 +23,7 @@ const MyModal = (props) => {
       isModalActive={isModalActive}
     >
       <div className="modalContent">
-        {isGameLosed === true ? (
+        {isGameLosed ? (
           <Lose
             startGame={startGame}
             shuffleCards={shuffleCards}

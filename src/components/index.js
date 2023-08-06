@@ -1,9 +1,8 @@
 export * from "./atoms/inputField/InputField";
 export * from "./atoms/myButton/MyButton";
 
-export * from "./molecules/countdown/Countdown";
-export * from "./molecules/countdown/Countdown";
 export * from "./molecules/singleCard/SingleCard";
+export * from "./molecules/countdown/Countdown";
 
 export * from "./organisms/gameMode/GameMode";
 export * from "./molecules/win/Win";

@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  InputField,
-  MyButton,
-  GameMode,
-} from "../../components";
+import { InputField, MyButton, GameMode } from "../../components";
 import "./WelcomePage.scss";
 
 const WelcomePage = (props) => {

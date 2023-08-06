@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Countdown, MyButton, MyModal, SingleCard } from "../../components";
-
+import { MyButton, MyModal, SingleCard, Countdown } from "../../components";
 import "./GamePage.scss";
+import { useCountdown } from "../../hooks/useCountdown";
 
 const cardImages = [
   { id: 1, src: "/img/book.png", matched: false },
@@ -27,9 +27,17 @@ const GamePage = (props) => {
   const [isSecondCardSelected, setIsSecondCardSelected] = useState(null);
   const [isCardFlipDisabled, setIsCardFlipDisabled] = useState(false);
   const [isModalActive, setIsModalActive] = useState(false);
-  const [isGameLosed, setIsGameLosed] = useState(false);
-  const [isPauseTimer, setIsPauseTimer] = useState(false);
-  const [isResetTimer, setIsResetTimer] = useState(false);
+  const [isGameLosed, setIsGameLosed] = useState();
+  const initialTime = 60;
+
+  const {
+    countdown,
+    isCountdownActive,
+    timer,
+    startTimer,
+    pauseTimer,
+    resetTimer,
+  } = useCountdown(initialTime);
 
   // shuffle cards
   const shuffleCards = () => {
@@ -40,6 +48,7 @@ const GamePage = (props) => {
   };
 
   const startNewGame = () => {
+    startTimer();
     shuffleCards();
     setIsFirstCardSelected(null);
     setIsSecondCardSelected(null);
@@ -48,14 +57,14 @@ const GamePage = (props) => {
   };
 
   const restartGame = () => {
+    resetTimer();
     startNewGame();
-    setIsResetTimer(true);
-    setTimeout(() => setIsResetTimer(false), 0);
   };
 
   const backToWelcomePage = () => {
     setIsModalActive(false);
     setStartGame(false);
+    resetTimer();
     setGameMode();
     setNameValue("New Player");
   };
@@ -72,10 +81,11 @@ const GamePage = (props) => {
     const allCardsMatched = cards?.every((element) => element.matched === true);
     if (allCardsMatched === true) {
       setTimeout(() => setIsModalActive(true), 500);
-      setIsPauseTimer(true);
       setIsGameLosed(false);
+      pauseTimer();
     }
   };
+
   // start a new game automatically
   useEffect(() => {
     startNewGame();
@@ -113,13 +123,20 @@ const GamePage = (props) => {
       setTimeout(() => setIsModalActive(true), 500);
     }
   };
+
   const gameLoseByTime = () => {
-    setTimeout(() => setIsModalActive(true), 500);
-    setIsGameLosed(true);
+    if (!isCountdownActive && countdown === 0) {
+      setTimeout(() => setIsModalActive(true), 500);
+      setIsGameLosed(true);
+    }
   };
 
   useEffect(() => {
     gameLoseByTurns();
+  });
+
+  useEffect(() => {
+    gameLoseByTime();
   });
 
   // reset choices & increase turn
@@ -149,15 +166,7 @@ const GamePage = (props) => {
       <MyButton clickButton={restartGame}>Restart game</MyButton>
       <MyButton clickButton={backToWelcomePage}>Exit</MyButton>
 
-      {gameMode === 1 ? (
-        <Countdown
-          pause={isPauseTimer}
-          reset={isResetTimer}
-          finishTimerHandler={gameLoseByTime}
-        />
-      ) : (
-        <></>
-      )}
+      {gameMode === 1 ? <Countdown timer={timer} /> : <></>}
       {gameMode === 2 ? <p>Turns: {turns}/20</p> : <></>}
 
       {gameMode === 3 ? <p>Turns: {turns}</p> : <></>}
